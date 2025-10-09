@@ -47,13 +47,35 @@ export default function Welcome({ auth }) {
                                 )}
                             </nav>
                         </header>
-
-                        <main className="mt-6">
-                            <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+                        <main className="mt-6 px-6 lg:px-16 bg-gray-900 min-h-screen text-white">
+                            <div className="grid gap-6 lg:grid-cols-2 lg:gap-8 items-center min-h-screen">
                                 
+                                <div className="space-y-6">
+                                <h1 className="text-4xl font-bold text-white">
+                                    Welcome to N&B Ultrasound Clinic
+                                </h1>
+                                <p className="text-lg text-gray-300">
+                                    Streamline your finances effortlessly with our advanced financial tracker.
+                                    Keep your clinic’s revenue, expenses, and invoices organized—all in one place.
+                                </p>
+                                    <Link
+                                        href={route('register')}
+                                        className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-500 transition"
+                                    >
+                                        Get started
+                                    </Link>
+                                </div>
+
+                                <div className="flex justify-center lg:justify-end">
+                                <img
+                                    src="/welcome.png" 
+                                    alt="Financial tracker illustration"
+                                    className="w-full max-w-md"
+                                />
+                                </div>
+
                             </div>
                         </main>
-
                         <footer className="py-16 text-center text-sm text-black dark:text-white/70">
                            
                         </footer>
