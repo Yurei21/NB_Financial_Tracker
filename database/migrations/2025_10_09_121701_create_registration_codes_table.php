@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('registration_codes', function (Blueprint $table) {
             $table->id();
+            $table->string('code_hash');
             $table->timestamps();
         });
         Schema::create('registration_reset_tokens', function (Blueprint $table) {
