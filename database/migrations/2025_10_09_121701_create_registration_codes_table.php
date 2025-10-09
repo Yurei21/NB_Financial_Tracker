@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
         });
-            Schema::create('registration_reset_tokens', function (Blueprint $table) {
+        Schema::create('registration_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
