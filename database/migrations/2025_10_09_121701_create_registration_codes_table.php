@@ -14,12 +14,8 @@ return new class extends Migration
         Schema::create('registration_codes', function (Blueprint $table) {
             $table->id();
             $table->string('code_hash');
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
-        });
-        Schema::create('registration_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
         });
     }
 
@@ -29,6 +25,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('registration_codes');
-        Schema::dropIfExists('registration_reset_tokens');
     }
 };

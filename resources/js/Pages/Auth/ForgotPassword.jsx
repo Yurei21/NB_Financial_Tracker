@@ -6,7 +6,7 @@ import { Head, useForm } from '@inertiajs/react';
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
-        email: '',
+        username: '',
     });
 
     const submit = (e) => {
@@ -20,8 +20,8 @@ export default function ForgotPassword({ status }) {
             <Head title="Forgot Password" />
 
             <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                Forgot your password? No problem. Just let us know your email
-                address and we will email you a password reset link that will
+                Forgot your password? No problem. Just let us know your username
+                and we will email you a password reset link that will
                 allow you to choose a new one.
             </div>
 
@@ -33,13 +33,13 @@ export default function ForgotPassword({ status }) {
 
             <form onSubmit={submit}>
                 <TextInput
-                    id="email"
-                    type="email"
-                    name="email"
-                    value={data.email}
+                    id="username"
+                    type="username"
+                    name="username"
+                    value={data.username}
                     className="mt-1 block w-full"
                     isFocused={true}
-                    onChange={(e) => setData('email', e.target.value)}
+                    onChange={(e) => setData('username', e.target.value)}
                 />
 
                 <InputError message={errors.email} className="mt-2" />
