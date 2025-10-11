@@ -34,7 +34,7 @@ export default function ForgotPassword({ status }) {
             <form onSubmit={submit}>
                 <TextInput
                     id="username"
-                    type="username"
+                    type="text  "
                     name="username"
                     value={data.username}
                     className="mt-1 block w-full"
