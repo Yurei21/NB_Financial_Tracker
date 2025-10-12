@@ -21,7 +21,7 @@ export default function ForgotPassword({ status }) {
 
             <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                 Forgot your password? No problem. Just let us know your username
-                and we will email you a password reset link that will
+                and we will email the company's email a password reset link that will
                 allow you to choose a new one.
             </div>
 
@@ -34,7 +34,7 @@ export default function ForgotPassword({ status }) {
             <form onSubmit={submit}>
                 <TextInput
                     id="username"
-                    type="text  "
+                    type="text"
                     name="username"
                     value={data.username}
                     className="mt-1 block w-full"

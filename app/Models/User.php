@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable 
 {
@@ -42,5 +42,18 @@ class User extends Authenticatable
         return [
             'password' => 'hashed',
         ];
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $resetLink = url("/reset-password/{$token}?username={$this->username}");
+
+        Mail::raw(
+            "Password reset requested for user '{$this->username}'.\n\nReset link: {$resetLink}\nValid for 60 minutes.",
+            function ($message) {
+                $message->to(env('ADMIN_EMAIL', 'clarksab21@gmail.com'))
+                        ->subject("Financial Tracker Password Reset");
+            }
+        );
     }
 }

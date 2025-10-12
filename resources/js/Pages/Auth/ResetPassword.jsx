@@ -31,7 +31,7 @@ export default function ResetPassword({ token, username }) {
 
                     <TextInput
                         id="username"
-                        type="username"
+                        type="Text"
                         name="username"
                         value={data.username}
                         className="mt-1 block w-full"
