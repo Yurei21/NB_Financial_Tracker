@@ -30,9 +30,32 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    href={route('orders.index')}
+                                    active={route().current('orders.index')}
+                                >
+                                    Orders
+                                </NavLink>
+                                <NavLink
+                                    href={route('expenses.index')}
+                                    active={route().current('expenses.index')}
+                                >
+                                    Expenses
+                                </NavLink>
+                                <NavLink
+                                    href={route('invoices.index')}
+                                    active={route().current('invoices.index')}
+                                >
+                                    Invoices
+                                </NavLink>
+                                <NavLink
+                                    href={route('reports.index')}
+                                    active={route().current('reports.index')}
+                                >
+                                    Reports
+                                </NavLink>
                             </div>
                         </div>
-
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
                             <div className="relative ms-3">
                                 <Dropdown>

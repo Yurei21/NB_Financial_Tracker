@@ -1,17 +1,24 @@
 <?php
 
+use App\Http\Controllers\ExpensesController;
+use App\Http\Controllers\InvoicesController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-    ]);
+    return Inertia::render('Welcome', [ 'auth' => Auth::user() ]);
 });
 
 Route::middleware(['auth', 'verified'])->group(function() {
-    
+    Route::resource('orders', OrderController::class);
+    Route::resource('expenses', ExpensesController::class);
+    Route::resource('invoices', InvoicesController::class);
+    Route::resource('reports', ReportController::class);
 });
 
 Route::get('/dashboard', function () {
