@@ -2,19 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $date = $request->date ?? Carbon::today()->toDateString();
+
+        $orders = Order::with(['createdBy', 'modifiedBy'])
+            ->whereDate('order_date', $date)
+            ->orderBy('order_date', 'desc')
+            ->paginate(5);
+
+        // Use Resource collection
+        return inertia('Orders/Index', [
+            'orders' => OrderResource::collection($orders),
+            'filters' => ['date' => $date],
+        ]);
     }
 
     /**
@@ -22,7 +36,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Orders/Create');
     }
 
     /**
@@ -46,7 +60,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        return inertia('Orders/Edit', ['orders' => $order]);
     }
 
     /**
