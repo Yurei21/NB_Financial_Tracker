@@ -9,6 +9,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class OrderController extends Controller
 {
@@ -22,11 +23,12 @@ class OrderController extends Controller
         $orders = Order::with(['createdBy', 'modifiedBy'])
             ->whereDate('order_date', $date)
             ->orderBy('order_date', 'desc')
-            ->paginate(5);
+            ->paginate(5)
+            ->appends(['date' => $date])
+            ->onEachSide(1);
 
-        // Use Resource collection
         return inertia('Orders/Index', [
-            'orders' => OrderResource::collection($orders),
+            'orders' => OrderResource::collection($orders)->response()->getData(true),
             'filters' => ['date' => $date],
         ]);
     }

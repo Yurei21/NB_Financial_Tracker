@@ -15,10 +15,10 @@ export default function OrdersCard({ orders, filters }) {
     };
 
     const deleteOrder = (orders) => {
-        if(!window.confirm('Are you sure you want to delete the project?')) {
+        if (!window.confirm('Are you sure you want to delete the project?')) {
             return
         }
-        
+
         router.visit(route('orders.destroy', orders.id), {
             method: 'delete',
             preserveScroll: true,
@@ -57,7 +57,7 @@ export default function OrdersCard({ orders, filters }) {
                             ].map(([label, value]) => (
                                 <div key={label} className="flex-1 min-w-[150px]">
                                     <label className="block text-xs text-gray-500 dark:text-gray-400">{label}</label>
-                                    <p className="text-gray-800 dark:text-gray-200 rounded-lg bg-gray-600 p-2">{value}</p>
+                                    <p className="text-gray-200 dark:text-gray-200 rounded-lg bg-gray-600 dark:bg-gray-600 p-2">{value}</p>
                                 </div>
                             ))}
                             <div className="flex gap-2 mt-2 w-full">
@@ -78,9 +78,9 @@ export default function OrdersCard({ orders, filters }) {
             {orders.data.length > 0 && (
                 <div className="flex justify-between mt-4">
                     <button
-                        disabled={!orders.prev_page_url}
-                        onClick={() => router.get(orders.prev_page_url, {}, { preserveState: true, replace: true })}
-                        className={`px-3 py-1 rounded-md ${orders.prev_page_url
+                        disabled={!orders.links.prev}
+                        onClick={() => router.get(orders.links.prev, {}, { preserveState: true, replace: true })}
+                        className={`px-3 py-1 rounded-md ${orders.links.prev
                                 ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
                                 : 'bg-gray-100 dark:bg-gray-800 opacity-50 cursor-not-allowed text-gray-800 dark:text-gray-200'
                             }`}
@@ -89,9 +89,9 @@ export default function OrdersCard({ orders, filters }) {
                     </button>
 
                     <button
-                        disabled={!orders.next_page_url}
-                        onClick={() => router.get(orders.next_page_url, {}, { preserveState: true, replace: true })}
-                        className={`px-3 py-1 rounded-md ${orders.next_page_url
+                        disabled={!orders.links.next}
+                        onClick={() => router.get(orders.links.next, {}, { preserveState: true, replace: true })}
+                        className={`px-3 py-1 rounded-md ${orders.links.next
                                 ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
                                 : 'bg-gray-100 dark:bg-gray-800 opacity-50 cursor-not-allowed text-gray-800 dark:text-gray-200'
                             }`}
@@ -100,6 +100,7 @@ export default function OrdersCard({ orders, filters }) {
                     </button>
                 </div>
             )}
+
         </div>
     );
 }
