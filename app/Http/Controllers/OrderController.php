@@ -27,9 +27,13 @@ class OrderController extends Controller
             ->appends(['date' => $date])
             ->onEachSide(1);
 
+        $amount = Order::whereDate('order_date', $date)->sum('amount');
+
         return inertia('Orders/Index', [
             'orders' => OrderResource::collection($orders),
             'filters' => ['date' => $date],
+            'success' => session('success'),
+            'totalAmount' => $amount
         ]);
     }
 
@@ -76,8 +80,12 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy(Order $order, Request $request)
     {
-        //
+        $order->delete();
+        return to_route('orders.index', [
+            'date' => $request->date ?? now()->toDateString(),
+            'page' => $request->page,
+        ])->with('success', 'Record has been deleted');
     }
 }

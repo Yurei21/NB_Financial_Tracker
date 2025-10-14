@@ -20,10 +20,10 @@ class OrderFactory extends Factory
         return [
             'patient_name' => $this->faker->name(),
             'order_date' => $this->faker->dateTimeBetween('-1 year', 'now'),
-            'amount' => $this->faker->randomFloat(2, 50, 1000), // 2 decimal places, min 50, max 1000
+            'amount' => $this->faker->randomFloat(2, 50, 1000), 
             'description' => $this->faker->sentence(),
-            'created_by' => User::factory(), // assumes User factory exists
-            'modified_by' => User::factory(), // assumes User factory exists
+            'created_by' => User::factory(), 
+            'modified_by' => User::factory(), 
         ];
     }
 }

@@ -14,17 +14,18 @@ export default function OrdersCard({ orders, filters }) {
         });
     };
 
-    const deleteOrder = (orders) => {
-        if (!window.confirm('Are you sure you want to delete the project?')) {
-            return
-        }
+    const deleteOrder = (order, currentPage) => {
+        if (!window.confirm('Are you sure you want to delete this order?')) return;
 
-        router.visit(route('orders.destroy', orders.id), {
-            method: 'delete',
+        router.delete(route('orders.destroy', order.id), {
+            preserveState: true,
             preserveScroll: true,
-            preserveState: false,
+            data: {
+                date: selectedDate,
+                page: currentPage
+            }
         });
-    }
+    };
 
     return (
         <div className="p-6">
@@ -64,7 +65,10 @@ export default function OrdersCard({ orders, filters }) {
                                 <Link href={route('orders.edit', order.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1 rounded-lg border-solid">
                                     Edit
                                 </Link>
-                                <button onClick={e => deleteOrder(order)} className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1">
+                                <button
+                                    onClick={() => deleteOrder(order, orders.meta?.current_page)}
+                                    className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
+                                >
                                     Delete
                                 </button>
                             </div>

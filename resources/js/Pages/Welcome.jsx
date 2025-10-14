@@ -14,7 +14,7 @@ export default function Welcome({ auth }) {
                                 <ApplicationLogo/>
                             </div>
                             <nav className="-mx-3 flex flex-1 justify-end">
-                                {auth.user ? (
+                                {auth?.user ? (
                                     <>
                                         <ThemeSwitch/>
                                         <Link
