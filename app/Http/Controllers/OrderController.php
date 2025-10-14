@@ -28,7 +28,7 @@ class OrderController extends Controller
             ->onEachSide(1);
 
         return inertia('Orders/Index', [
-            'orders' => OrderResource::collection($orders)->response()->getData(true),
+            'orders' => OrderResource::collection($orders),
             'filters' => ['date' => $date],
         ]);
     }
