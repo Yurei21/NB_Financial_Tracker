@@ -4,7 +4,6 @@ import { Head, Link } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
 export default function OrdersIndex({ orders, filters, success, totalAmount }) {
-    console.log(totalAmount)
     const amount = totalAmount ?? 0
     const [showSuccess, setShowSuccess] = useState(!!success);
 

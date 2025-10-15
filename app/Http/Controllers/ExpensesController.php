@@ -14,7 +14,7 @@ class ExpensesController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
