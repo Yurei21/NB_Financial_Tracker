@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "@heroicons/react": "^2.2.0",
+        "@mui/x-charts": "^8.14.0",
         "@tauri-apps/cli": "^2.8.4"
     }
 }
