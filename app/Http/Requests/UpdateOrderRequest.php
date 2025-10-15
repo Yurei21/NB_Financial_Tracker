@@ -11,7 +11,7 @@ class UpdateOrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'patient_name' => ['required', 'max:255'],
+            'description' => ['required', 'string'],
+            'order_date' => ['required', 'date'],
+            'amount' => ['required', 'numeric'],
         ];
     }
 }

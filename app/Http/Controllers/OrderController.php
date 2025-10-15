@@ -9,6 +9,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -18,7 +19,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $date = $request->date ?? Carbon::today()->toDateString();
+        $date = $request->date ?? Carbon::today('Asia/Manila')->toDateString();
 
         $orders = Order::with(['createdBy', 'modifiedBy'])
             ->whereDate('order_date', $date)
@@ -50,7 +51,13 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['created_by'] = Auth::id();
+        $data['modified_by'] = Auth::id();
+
+        Order::create($data);
+
+        return to_route('orders.index')->with('success', 'Order has been created');
     }
 
     /**
@@ -58,7 +65,10 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        return inertia('Orders/Show', [
+            'order' => new OrderResource($order),
+            'filters' => ['date' => request('date'), 'page' => request('page')]
+        ]);
     }
 
     /**
@@ -74,7 +84,12 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+        $data = $request->validated();
+        $data['modified_by'] = Auth::id();
+
+        $order->update($data);
+
+        return to_route('orders.index')->with('success', 'Successfully Updated');
     }
 
     /**

@@ -58,10 +58,16 @@ export default function OrdersCard({ orders, filters }) {
                             ].map(([label, value]) => (
                                 <div key={label} className="flex-1 min-w-[150px]">
                                     <label className="block text-xs text-gray-500 dark:text-gray-400">{label}</label>
-                                    <p className="text-gray-200 dark:text-gray-200 rounded-lg bg-gray-600 dark:bg-gray-600 p-2">{value}</p>
+                                    <p className="text-gray-200 dark:text-gray-200 rounded-lg bg-gray-600 dark:bg-gray-600 p-2 truncate overflow-hidden whitespace-nowrap">
+                                        {value}
+                                    </p>
                                 </div>
+
                             ))}
                             <div className="flex gap-2 mt-2 w-full">
+                                <Link href={route('orders.show', order.id)} className="font-medium text-green-600 dark:text-green-500 hover:underline mx-1">
+                                    View all details
+                                </Link>
                                 <Link href={route('orders.edit', order.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1 rounded-lg border-solid">
                                     Edit
                                 </Link>
@@ -85,8 +91,8 @@ export default function OrdersCard({ orders, filters }) {
                         disabled={!orders.links.prev}
                         onClick={() => router.get(orders.links.prev, {}, { preserveState: true, replace: true })}
                         className={`px-3 py-1 rounded-md ${orders.links.prev
-                                ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
-                                : 'bg-gray-100 dark:bg-gray-800 opacity-50 cursor-not-allowed text-gray-800 dark:text-gray-200'
+                            ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+                            : 'bg-gray-100 dark:bg-gray-800 opacity-50 cursor-not-allowed text-gray-800 dark:text-gray-200'
                             }`}
                     >
                         Prev
@@ -96,8 +102,8 @@ export default function OrdersCard({ orders, filters }) {
                         disabled={!orders.links.next}
                         onClick={() => router.get(orders.links.next, {}, { preserveState: true, replace: true })}
                         className={`px-3 py-1 rounded-md ${orders.links.next
-                                ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
-                                : 'bg-gray-100 dark:bg-gray-800 opacity-50 cursor-not-allowed text-gray-800 dark:text-gray-200'
+                            ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+                            : 'bg-gray-100 dark:bg-gray-800 opacity-50 cursor-not-allowed text-gray-800 dark:text-gray-200'
                             }`}
                     >
                         Next
