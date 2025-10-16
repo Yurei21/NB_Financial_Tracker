@@ -10,7 +10,6 @@ use App\Http\Requests\UpdateOrderRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 
 class OrderController extends Controller
 {

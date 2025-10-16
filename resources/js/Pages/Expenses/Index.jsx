@@ -19,9 +19,9 @@ export default function ExpensesIndex({ expenses, filters, success, totalAmount 
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Orders</h2>
+                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Expenses</h2>
                     <Link
-                        href={route("orders.create")}
+                        href={route("expenses.create")}
                         className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
                     >
                         + Add New
@@ -29,7 +29,7 @@ export default function ExpensesIndex({ expenses, filters, success, totalAmount 
                 </div>
             }
         >
-            <Head title="Orders" />
+            <Head title="Expenses" />
 
             {showSuccess && success && (
                 <div
@@ -44,9 +44,9 @@ export default function ExpensesIndex({ expenses, filters, success, totalAmount 
             <div className="max-w-4xl mx-auto">
                 <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow p-4 mb-4 flex flex-col sm:flex-row justify-between gap-4 mt-5">
                     <div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Total Orders</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Total Expenses</p>
                         <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                            {orders.meta?.total ?? orders.data.length}
+                            {expenses.meta?.total ?? expenses.data.length}
                         </p>
                     </div>
                     <div>
@@ -64,7 +64,7 @@ export default function ExpensesIndex({ expenses, filters, success, totalAmount 
                 </div>
             </div>
 
-            <Expenses expenses={expenses} filters={filters} />
+            <ExpensesModal expenses={expenses} filters={filters} />
         </AuthenticatedLayout>
     );
 }

@@ -27,7 +27,7 @@ export default function Create({}) {
                 </h2>
             }
         >
-            <Head title="Create a task" />
+            <Head title="Create an Order" />
             
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -35,22 +35,22 @@ export default function Create({}) {
                         <form onSubmit={onSubmit}className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                             <div>
                                 <InputLabel htmlFor="patient_name" value="Patient Name" />
-                                <TextInput id="patient_name" type="text" name="image" value={data.patient_name} className="mt-1 block w-full" isFocused={true} onChange={e => setData('patient_name', e.target.value)}/>
+                                <TextInput id="patient_name" type="text" name="patient_name" value={data.patient_name} className="mt-1 block w-full" isFocused={true} onChange={e => setData('patient_name', e.target.value)}/>
                                 <InputError message={errors.patient_name} className="mt-2"/>
                             </div>
                             <div className="mt-4">
                                 <InputLabel htmlFor="" value="description" />
-                                <TextAreaInput id="description" type="text" name="text" value={data.description} className="mt-1 block w-full" isFocused={true} onChange={e => setData('description', e.target.value)}/>
+                                <TextAreaInput id="description" type="text" name="description" value={data.description} className="mt-1 block w-full" isFocused={true} onChange={e => setData('description', e.target.value)}/>
                                 <InputError message={errors.description} className="mt-2"/>
                             </div>
                             <div className="mt-4">
                                 <InputLabel htmlFor="amount" value="Amount" />
-                                <TextInput id="amount" name="text" value={data.amount} className="mt-1 block w-full" isFocused={true} onChange={e => setData('amount', e.target.value)}/>
+                                <TextInput id="amount" name="amount" value={data.amount} className="mt-1 block w-full" isFocused={true} onChange={e => setData('amount', e.target.value)}/>
                                 <InputError message={errors.amount} className="mt-2"/>
                             </div>
                             <div className="mt-4">
                                 <InputLabel htmlFor="order_date" value="Order Date" />
-                                <TextInput id="order_date" type="date" name="due_date" value={data.order_date} className="mt-1 block w-full" isFocused={true} onChange={e => setData('order_date', e.target.value)}/>
+                                <TextInput id="order_date" type="date" name="order_date" value={data.order_date} className="mt-1 block w-full" isFocused={true} onChange={e => setData('order_date', e.target.value)}/>
                                 <InputError message={errors.order_date} className="mt-2"/>
                             </div>
                             <div className="mt-4 text-right">

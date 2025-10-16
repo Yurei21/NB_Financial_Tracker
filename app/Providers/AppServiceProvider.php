@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Expenses;
+use App\Models\Expense;
 use App\Models\Order;
 use App\Services\ReportService;
 use Illuminate\Support\Facades\Vite;
@@ -32,10 +32,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Expenses
-        Expenses::saved(function ($expense) {
+        Expense::saved(function ($expense) {
             ReportService::updateForDate($expense->expense_date);
         });
-        Expenses::deleted(function ($expense) {
+        Expense::deleted(function ($expense) {
             ReportService::updateForDate($expense->expense_date);
         });
         Vite::prefetch(concurrency: 3);

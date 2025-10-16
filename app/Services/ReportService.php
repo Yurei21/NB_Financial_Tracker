@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Expenses;
+use App\Models\Expense;
 use App\Models\Order;
-use App\Models\Reports;
+use App\Models\Report;
 use Carbon\Carbon;
 
 class ReportService
@@ -16,9 +16,9 @@ class ReportService
 
         $totalOrders = Order::whereDate('order_date', $date)->count();
         $totalIncome = Order::whereDate('order_date', $date)->sum('amount');
-        $totalExpenses = Expenses::whereDate('expense_date', $date)->sum('amount');
+        $totalExpenses = Expense::whereDate('expense_date', $date)->sum('amount');
 
-        $report = Reports::firstOrCreate(
+        $report = Report::firstOrCreate(
             ['month' => $monthStart],
             [
                 'total_orders' => 0,
