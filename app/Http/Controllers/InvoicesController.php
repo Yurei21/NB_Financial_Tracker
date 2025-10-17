@@ -14,7 +14,7 @@ class InvoicesController extends Controller
      */
     public function index()
     {
-        //
+        return inertia("Invoices/Index");
     }
 
     /**
