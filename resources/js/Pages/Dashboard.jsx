@@ -1,11 +1,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { PieChart } from '@mui/x-charts/PieChart';
-import { LineChart, lineElementClasses } from '@mui/x-charts/LineChart';
+import { LineChart } from '@mui/x-charts/LineChart';
 import Box from '@mui/material/Box';
 import useDarkMode from '@/Components/IsDark'
 
-export default function Dashboard() {
+export default function Dashboard({orderAmount, expenseAmount}) {
 
     const isDark = useDarkMode();
 

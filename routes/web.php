@@ -17,8 +17,10 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function() {
     Route::resource('orders', OrderController::class);
     Route::resource('expenses', ExpensesController::class);
-    Route::resource('invoices', InvoicesController::class);
-    Route::resource('reports', ReportController::class);
+    Route::resource('invoices', InvoicesController::class)
+         ->only(['index', 'show']); 
+    Route::resource('reports', ReportController::class)
+         ->only(['index']); 
 });
 
 Route::get('/dashboard', function () {

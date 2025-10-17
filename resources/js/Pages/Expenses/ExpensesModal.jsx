@@ -91,7 +91,7 @@ export default function ExpensesModal({ expenses, filters }) {
             </div>
 
             {expenses.data.length > 0 && (
-                <div className="flex justify-between mt-4">
+                <div className="flex justify-center mt-4 gap-2">
                     <button
                         disabled={!expenses.links.prev}
                         onClick={() => router.get(expenses.links.prev, {}, { preserveState: true, replace: true })}
@@ -102,6 +102,21 @@ export default function ExpensesModal({ expenses, filters }) {
                     >
                         Prev
                     </button>
+
+                    {expenses.meta.last_page && Array.from({ length: expenses.meta.last_page }, (_, i) => i + 1).map((page) => (
+                        <button
+                            key={page}
+                            onClick={() =>
+                                router.get(route('expenses.index', { date: selectedDate, page }), {}, { preserveState: true, replace: true })
+                            }
+                            className={`px-3 py-1 rounded-md ${page === expenses.meta.current_page
+                                    ? 'bg-blue-600 text-white dark:bg-blue-500'
+                                    : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+                                }`}
+                        >
+                            {page}
+                        </button>
+                    ))}
 
                     <button
                         disabled={!expenses.links.next}

@@ -25,7 +25,7 @@ class UpdateOrderRequest extends FormRequest
             'patient_name' => ['required', 'max:255'],
             'description' => ['required', 'string'],
             'order_date' => ['required', 'date'],
-            'amount' => ['required', 'numeric'],
+            'amount' => ['required', 'numeric', 'min:0.01'],
         ];
     }
 }

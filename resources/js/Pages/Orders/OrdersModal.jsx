@@ -86,7 +86,7 @@ export default function OrdersCard({ orders, filters }) {
             </div>
 
             {orders.data.length > 0 && (
-                <div className="flex justify-between mt-4">
+                <div className="flex justify-center mt-4 gap-2">
                     <button
                         disabled={!orders.links.prev}
                         onClick={() => router.get(orders.links.prev, {}, { preserveState: true, replace: true })}
@@ -97,6 +97,21 @@ export default function OrdersCard({ orders, filters }) {
                     >
                         Prev
                     </button>
+
+                    {orders.meta.last_page && Array.from({ length: orders.meta.last_page }, (_, i) => i + 1).map((page) => (
+                        <button
+                            key={page}
+                            onClick={() =>
+                                router.get(route('orders.index', { date: selectedDate, page }), {}, { preserveState: true, replace: true })
+                            }
+                            className={`px-3 py-1 rounded-md ${page === orders.meta.current_page
+                                    ? 'bg-blue-600 text-white dark:bg-blue-500'
+                                    : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+                                }`}
+                        >
+                            {page}
+                        </button>
+                    ))}
 
                     <button
                         disabled={!orders.links.next}

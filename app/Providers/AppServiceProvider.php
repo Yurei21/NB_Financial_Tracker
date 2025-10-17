@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Expense;
+use App\Models\Invoice;
 use App\Models\Order;
+use App\Services\InvoiceService;
 use App\Services\ReportService;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -38,6 +40,15 @@ class AppServiceProvider extends ServiceProvider
         Expense::deleted(function ($expense) {
             ReportService::updateForDate($expense->expense_date);
         });
+
+        //Invoices
+        Invoice::saved(function($order) {
+            InvoiceService::generate($order);
+        });
+        Invoice::deleted(function($order) {
+            InvoiceService::delete($order);
+        });
+
         Vite::prefetch(concurrency: 3);
     }
 }

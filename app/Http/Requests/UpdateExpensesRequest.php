@@ -25,7 +25,7 @@ class UpdateExpensesRequest extends FormRequest
             'label' => ['required', 'max:255'],
             'description' => ['required', 'string'],
             'expense_date' => ['required', 'date'],
-            'amount' => ['required', 'numeric'],
+            'amount' => ['required', 'numeric', 'min:0.01'],
         ];
     }
 }

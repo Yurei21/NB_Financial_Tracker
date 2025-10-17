@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Expenses;
+use App\Models\Expense;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             'modified_by' => $user->id,
         ]);
 
-        Expenses::factory()->count(20)->create([
+        Expense::factory()->count(20)->create([
             'created_by' => $user->id,
             'modified_by' => $user->id,
         ]);

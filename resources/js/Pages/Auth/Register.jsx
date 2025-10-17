@@ -44,7 +44,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="registration_code" value="Registration Code" />
+                    <InputLabel htmlFor="registration_code" value="Registration Code (Sent via Company Email)" />
 
                     <TextInput
                         id="registration_code"
@@ -56,7 +56,7 @@ export default function Register() {
                         onChange={(e) => setData('registration_code', e.target.value)}
                         required
                     />
-
+x
                     <InputError message={errors.registration_code} className="mt-2" />
                 </div>
 

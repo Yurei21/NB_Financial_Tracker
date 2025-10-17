@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Expense>
  */
-class ExpensesFactory extends Factory
+class ExpenseFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,12 +18,12 @@ class ExpensesFactory extends Factory
     public function definition(): array
     {
         return [
-            'label' => $this->faker->sentence(),
-            'description' => $this->faker->name(),
+            'label' => $this->faker->word(),
             'expense_date' => now(),
-            'amount' => $this->faker->randomFloat(2, 50, 1000), 
-            'created_by' => User::factory(), 
-            'modified_by' => User::factory(), 
+            'amount' => $this->faker->randomFloat(2, 10, 500),
+            'description' => $this->faker->sentence(), 
+            'created_by' => 1,
+            'modified_by' => 1,
         ];
     }
 }
