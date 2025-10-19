@@ -28,9 +28,11 @@ class AppServiceProvider extends ServiceProvider
         // Orders
         Order::saved(function ($order) {
             ReportService::updateForDate($order->order_date);
+            InvoiceService::generate($order);
         });
         Order::deleted(function ($order) {
             ReportService::updateForDate($order->order_date);
+            InvoiceService::delete($order); 
         });
 
         // Expenses
@@ -39,14 +41,6 @@ class AppServiceProvider extends ServiceProvider
         });
         Expense::deleted(function ($expense) {
             ReportService::updateForDate($expense->expense_date);
-        });
-
-        //Invoices
-        Invoice::saved(function($order) {
-            InvoiceService::generate($order);
-        });
-        Invoice::deleted(function($order) {
-            InvoiceService::delete($order);
         });
 
         Vite::prefetch(concurrency: 3);

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Order;
 use App\Models\Invoice;
+use Illuminate\Support\Facades\Log;
 
 class InvoiceService
 {
@@ -26,7 +27,7 @@ class InvoiceService
             ['order_id' => $order->id],
             [
                 'transaction_id' => $transactionId,
-                'amount' => $order->amount,
+                'total_amount' => $order->amount,
                 'description' => $order->description
             ]
         );
