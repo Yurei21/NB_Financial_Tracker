@@ -2,19 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\InvoicesResources;
 use App\Models\Invoice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreInvoicesRequest;
 use App\Http\Requests\UpdateInvoicesRequest;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class InvoicesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return inertia("Invoices/Index");
+    public function index(Request $request)
+    {   
+        $date = $request->date ?? Carbon::today('Asia/Manila')->toDateString();
+
+        $invoices = Invoice::with(['order.createdBy', 'order.modifiedBy'])
+            ->whereDate('created_at', $date)
+            ->orderByDesc('created_at')
+            ->paginate(5)
+            ->appends(['date' => $date])
+            ->onEachSide(1);
+
+        $totalAmount = Invoice::whereDate('created_at', $date)->sum('total_amount');
+        $totalInvoices = Invoice::whereDate('created_at', $date)->count();
+
+        return inertia('Invoices/Index', [
+            'invoices' => InvoicesResources::collection($invoices),
+            'filters' => ['date' => $date],
+            'success' => session('success'),
+            'totalAmount' => $totalAmount,
+            'totalInvoices' => $totalInvoices,
+        ]);
     }
 
     /**
