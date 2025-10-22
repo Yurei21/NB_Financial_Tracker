@@ -22,12 +22,6 @@ export default function InvoicesIndex({ invoices, filters, success, totalAmount 
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Invoices
                     </h2>
-                    <Link
-                        href={route("invoices.create")}
-                        className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-                    >
-                        + Add New
-                    </Link>
                 </div>
             }
         >

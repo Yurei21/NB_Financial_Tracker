@@ -50,7 +50,7 @@ export default function OrdersCard({ orders, filters }) {
                         >
                             {[
                                 ['Patient Name', order.patient_name],
-                                ['Description', order.description],
+                                ['Medical Order', order.description],
                                 ['Order Date', order.order_date],
                                 ['Amount', `₱${order.amount}`],
                                 ['Created By', order.created_by],

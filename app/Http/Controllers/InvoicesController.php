@@ -59,7 +59,11 @@ class InvoicesController extends Controller
      */
     public function show(Invoice $invoice)
     {
-        //
+        $invoice->load('order'); 
+
+        return inertia('Invoices/Show', [
+            'invoice' => new InvoicesResources($invoice),
+        ]);
     }
 
     /**
