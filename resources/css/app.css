@@ -10,3 +10,50 @@
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out;
 }
+
+@media print {
+    html {
+        color-scheme: light !important;
+        background: white !important;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    * {
+        color: black !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .overflow-x-auto,
+    .overflow-y-auto {
+        overflow: visible !important;
+    }
+
+    main, div, section {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+    }
+
+    th, td {
+        border: 1px solid #000 !important;
+        padding: 6px !important;
+    }
+
+    th {
+        font-weight: bold !important;
+        background: #f3f4f6 !important;
+    }
+
+    button, select {
+        display: none !important;
+    }
+}

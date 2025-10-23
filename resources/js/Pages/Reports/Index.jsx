@@ -87,6 +87,7 @@ export default function ReportsIndex({ report, selectedMonth, selectedYear, avai
                                     Daily Breakdown
                                 </h3>
                                 <button
+                                    onClick={() => window.print()}
                                     className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg text-sm font-medium shadow transition"
                                 >
                                     Print Monthly Report
