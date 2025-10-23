@@ -56,7 +56,6 @@ export default function Register() {
                         onChange={(e) => setData('registration_code', e.target.value)}
                         required
                     />
-x
                     <InputError message={errors.registration_code} className="mt-2" />
                 </div>
 

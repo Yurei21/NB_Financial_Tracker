@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $user = User::factory()->create([
         ]);
 
-        Order::factory()->count(20)->create([
+        Order::factory()->count(40)->create([
             'created_by' => $user->id,
             'modified_by' => $user->id,
         ]);

@@ -17,6 +17,7 @@ class ReportService
         $totalOrders = Order::whereDate('order_date', $date)->count();
         $totalIncome = Order::whereDate('order_date', $date)->sum('amount');
         $totalExpenses = Expense::whereDate('expense_date', $date)->sum('amount');
+        $netProfit = $totalIncome - $totalExpenses;
 
         $report = Report::firstOrCreate(
             ['month' => $monthStart],
@@ -33,17 +34,25 @@ class ReportService
         $data = json_decode($report->daily_data, true) ?? [];
 
         $data[$date->toDateString()] = [
+            'date' => $date->toDateString(),
+            'day' => $date->format('l'),
             'total_orders' => $totalOrders,
             'total_income' => $totalIncome,
             'total_expenses' => $totalExpenses,
+            'net_profit' => $netProfit,
         ];
 
+        $totalOrdersMonth = array_sum(array_column($data, 'total_orders'));
+        $totalIncomeMonth = array_sum(array_column($data, 'total_income'));
+        $totalExpensesMonth = array_sum(array_column($data, 'total_expenses'));
+        $netProfitMonth = $totalIncomeMonth - $totalExpensesMonth;
+
         $report->update([
-            'daily_data' => $data,
-            'total_orders' => array_sum(array_column($data, 'total_orders')),
-            'total_income' => array_sum(array_column($data, 'total_income')),
-            'total_expenses' => array_sum(array_column($data, 'total_expenses')),
-            'net_profit' => array_sum(array_column($data, 'total_income')) - array_sum(array_column($data, 'total_expenses')),
+            'daily_data' => json_encode($data),
+            'total_orders' => $totalOrdersMonth,
+            'total_income' => $totalIncomeMonth,
+            'total_expenses' => $totalExpensesMonth,
+            'net_profit' => $netProfitMonth,
             'generated_at' => now(),
         ]);
     }
