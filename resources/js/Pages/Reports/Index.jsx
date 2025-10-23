@@ -74,8 +74,8 @@ export default function ReportsIndex({ report, selectedMonth, selectedYear, avai
                             {/* Summary Cards */}
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full md:w-auto">
                                 <SummaryCard label="Total Orders" value={report?.total_orders ?? 0} color="blue" />
-                                <SummaryCard label="Total Expenses" value={`₱${report?.total_expenses ?? '0.00'}`} color="yellow" />
                                 <SummaryCard label="Total Income" value={`₱${report?.total_income ?? '0.00'}`} color="teal" />
+                                <SummaryCard label="Total Expenses" value={`₱${report?.total_expenses ?? '0.00'}`} color="yellow" />
                                 <SummaryCard label="Net Profit" value={`₱${report?.net_profit ?? '0.00'}`} color="green" />
                             </div>
                         </div>
