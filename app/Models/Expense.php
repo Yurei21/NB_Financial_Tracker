@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Expense extends Model
 {
@@ -26,5 +27,11 @@ class Expense extends Model
     public function modifiedBy()
     {
         return $this->belongsTo(User::class, 'modified_by');
+    }
+
+    protected static function booted()
+    {
+        static::saved(fn() => Cache::flush());
+        static::deleted(fn() => Cache::flush());
     }
 }

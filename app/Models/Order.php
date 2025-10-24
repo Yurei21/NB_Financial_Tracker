@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Order extends Model
 {
@@ -33,4 +34,10 @@ class Order extends Model
     {
         return $this->hasOne(Invoice::class);
     }
+
+    protected static function booted()
+{
+    static::saved(fn() => Cache::flush());
+    static::deleted(fn() => Cache::flush());
+}
 }
