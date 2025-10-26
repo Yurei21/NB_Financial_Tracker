@@ -51,7 +51,6 @@ export default function Dashboard({ orderAmount, expenseAmount, netIncome, pieDa
 
                         {/* Charts */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            {/* Pie Chart (compact preview) */}
                             <div
                                 onClick={() => setOpenModal('pie')}
                                 className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow p-6 flex flex-col items-center mx-8 hover:scale-[1.02] transition-transform"
@@ -60,9 +59,7 @@ export default function Dashboard({ orderAmount, expenseAmount, netIncome, pieDa
                                     Expenses by Label
                                 </h3>
 
-                                {/* container holds chart + a small custom legend */}
                                 <Box sx={{ width: '100%', maxWidth: 280, height: 220, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                    {/* small chart with labels + built-in legend hidden */}
                                     <Box sx={{ width: '100%', flex: '0 0 auto', display: 'flex', justifyContent: 'center' }}>
                                         <PieChart
                                             series={[{ data: pieData, label: { visible: false } }]}
@@ -70,25 +67,22 @@ export default function Dashboard({ orderAmount, expenseAmount, netIncome, pieDa
                                             height={130}
                                             sx={{
                                                 backgroundColor: bgColor,
-                                                // hide built-in legend so it doesn't overflow
                                                 '& .MuiChartsLegend-root': { display: 'none' },
-                                                // hide chart labels (inside slices)
                                                 '& .MuiChartsLabel-root': { display: 'none' },
                                             }}
                                         />
                                     </Box>
 
-                                    {/* custom legend: scrollable, small text, truncates long labels */}
                                     <div
                                         className="w-full mt-2"
                                         style={{
-                                            maxHeight: 68,     // keep compact; adjust to taste
+                                            maxHeight: 68,     
                                             overflowY: 'auto',
-                                            paddingRight: 6,   // room for scrollbar
+                                            paddingRight: 6,
                                         }}
                                     >
                                         {pieData.map((slice, i) => {
-                                            const color = slice.color || (slice[2] ? slice[2] : null) || '#BBBBBB'; // tolerate different data shapes
+                                            const color = slice.color || (slice[2] ? slice[2] : null) || '#BBBBBB';
                                             const label = slice.label ?? slice.name ?? `Item ${i + 1}`;
                                             const value = slice.value ?? slice.y ?? slice[1] ?? '';
                                             return (
