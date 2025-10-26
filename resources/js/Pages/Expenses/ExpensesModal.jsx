@@ -46,7 +46,7 @@ export default function ExpensesModal({ expenses, filters }) {
                 />
             </div>
 
-            <div className="space-y-4 max-h-[500px] overflow-y-auto">
+            <div className="space-y-4">
                 {expenses.data.length > 0 ? (
                     expenses.data.map((expense) => (
                         <div

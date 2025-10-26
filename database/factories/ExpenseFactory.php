@@ -19,7 +19,7 @@ class ExpenseFactory extends Factory
     {
         return [
             'label' => $this->faker->word(),
-            'expense_date' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'expense_date' => now(),
             'amount' => $this->faker->randomFloat(2, 10, 500),
             'description' => $this->faker->sentence(), 
             'created_by' => 1,

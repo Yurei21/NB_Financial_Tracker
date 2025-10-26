@@ -10,6 +10,7 @@ export default function InvoicesModal({ invoices, filters }) {
         router.get(route('invoices.index'), { date: newDate }, {
             preserveState: true,
             replace: true,
+            preserveScroll: true,
         });
     };
     return (

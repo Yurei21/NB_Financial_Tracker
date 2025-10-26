@@ -19,7 +19,7 @@ class OrderFactory extends Factory
     {
         return [
             'patient_name' => $this->faker->name(),
-            'order_date' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'order_date' => now(),
             'amount' => $this->faker->randomFloat(2, 50, 1000), 
             'description' => $this->faker->sentence(),
             'created_by' => User::factory(), 

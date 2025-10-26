@@ -41,7 +41,7 @@ export default function OrdersCard({ orders, filters }) {
                 />
             </div>
 
-            <div className="space-y-4 max-h-[500px] overflow-y-auto">
+            <div className="space-y-4">
                 {orders.data.length > 0 ? (
                     orders.data.map((order) => (
                         <div

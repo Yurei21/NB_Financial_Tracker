@@ -18,7 +18,7 @@ class InvoicesResources extends JsonResource
     {
         return [
             'id' => $this->id,
-            'order_id' => $this->order_id, // keep this as ID, not a resource
+            'order_id' => $this->order_id,
             'order' => new OrderResource($this->whenLoaded('order')), 
             'transaction_id' => $this->transaction_id,
             'amount' => $this->total_amount, 

@@ -20,14 +20,21 @@ class InvoicesController extends Controller
         $date = $request->date ?? Carbon::today('Asia/Manila')->toDateString();
 
         $invoices = Invoice::with(['order.createdBy', 'order.modifiedBy'])
-            ->whereDate('created_at', $date)
+            ->whereHas('order', function ($query) use ($date) {
+                $query->whereDate('order_date', $date);
+            })
             ->orderByDesc('created_at')
-            ->paginate(5)
+            ->paginate(10)
             ->appends(['date' => $date])
             ->onEachSide(1);
 
-        $totalAmount = Invoice::whereDate('created_at', $date)->sum('total_amount');
-        $totalInvoices = Invoice::whereDate('created_at', $date)->count();
+        $totalAmount = Invoice::whereHas('order', function ($query) use ($date) {
+            $query->whereDate('order_date', $date);
+        })->sum('total_amount');
+
+        $totalInvoices = Invoice::whereHas('order', function ($query) use ($date) {
+            $query->whereDate('order_date', $date);
+        })->count();
 
         return inertia('Invoices/Index', [
             'invoices' => InvoicesResources::collection($invoices),
