@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RegistrationCodeMail;
 use App\Models\RegistrationCode;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -29,12 +30,10 @@ class RegisteredUserController extends Controller
             'code_hash' => Hash::make($plainCode),
             'expires_at' => now()->addMinutes(10),
         ]);
+
         $recipient = config('mail.admin_address', env('ADMIN_EMAIL', 'clarksab21@gmail.com'));
 
-        Mail::raw("Your Registration code is {$plainCode}. It will expire in 10 minutes.", function($message) use ($recipient) {
-            $message->to($recipient)
-                ->subject("Your Financial Tracker Registration Code");
-        });
+        Mail::to($recipient)->queue(new RegistrationCodeMail($plainCode));
 
         return Inertia::render('Auth/Register');
     }

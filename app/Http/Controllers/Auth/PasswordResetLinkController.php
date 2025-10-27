@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\PasswordResetMail;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -39,17 +40,11 @@ class PasswordResetLinkController extends Controller
         $token = Str::random(64);
         $resetLink = url("/reset-password/{$token}?username={$user->username}");
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        Mail::raw(
-            "Password reset requested for user '{$user->username}'.\n\nReset link: {$resetLink}\nValid for 60 minutes.",
-            function ($message) {
-                $message->to(env('ADMIN_EMAIL', 'clarksab21@gmail.com'))
-                        ->subject("Financial Tracker Password Reset");
-            }
-        );
+        $recipient = env('ADMIN_EMAIL', 'clarksab21@gmail.com');
 
-        return back()->with('status', 'Password reset link has been sent to the business email.');
+        // Queue the email instead of sending immediately
+        Mail::to($recipient)->queue(new PasswordResetMail($user->username, $resetLink));
+
+        return back()->with('status', 'Password reset link has been queued for sending.');
     }
 }
