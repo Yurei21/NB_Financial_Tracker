@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { router, Link } from '@inertiajs/react';
+import ConfirmModal from '@/Components/Confirm'; // adjust path as needed
 
 export default function OrdersCard({ orders, filters }) {
     const [selectedDate, setSelectedDate] = useState(filters.date);
+    const [orderToDelete, setOrderToDelete] = useState(null); // for tracking which order
+    const [showModal, setShowModal] = useState(false);
 
     const handleDateChange = (e) => {
         const newDate = e.target.value;
@@ -14,15 +17,24 @@ export default function OrdersCard({ orders, filters }) {
         });
     };
 
-    const deleteOrder = (order, currentPage) => {
-        if (!window.confirm('Are you sure you want to delete this order?')) return;
+    const confirmDelete = (order) => {
+        setOrderToDelete(order);
+        setShowModal(true);
+    };
 
-        router.delete(route('orders.destroy', order.id), {
+    const handleConfirmDelete = () => {
+        if (!orderToDelete) return;
+
+        router.delete(route('orders.destroy', orderToDelete.id), {
             preserveState: true,
             preserveScroll: true,
             data: {
                 date: selectedDate,
-                page: currentPage
+                page: orders.meta?.current_page,
+            },
+            onFinish: () => {
+                setShowModal(false);
+                setOrderToDelete(null);
             }
         });
     };
@@ -50,7 +62,7 @@ export default function OrdersCard({ orders, filters }) {
                         >
                             {[
                                 ['Patient Name', order.patient_name],
-                                ['Medical Order', order.description],
+                                ['Clinic Service', order.description],
                                 ['Order Date', order.order_date],
                                 ['Amount', `₱${order.amount}`],
                                 ['Created By', order.created_by],
@@ -62,7 +74,6 @@ export default function OrdersCard({ orders, filters }) {
                                         {value}
                                     </p>
                                 </div>
-
                             ))}
                             <div className="flex gap-2 mt-2 w-full">
                                 <Link href={route('orders.show', order.id)} className="font-medium text-green-600 dark:text-green-500 hover:underline mx-1">
@@ -72,7 +83,7 @@ export default function OrdersCard({ orders, filters }) {
                                     Edit
                                 </Link>
                                 <button
-                                    onClick={() => deleteOrder(order, orders.meta?.current_page)}
+                                    onClick={() => confirmDelete(order)}
                                     className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                 >
                                     Delete
@@ -126,6 +137,17 @@ export default function OrdersCard({ orders, filters }) {
                 </div>
             )}
 
+            {/* Confirm Delete Modal */}
+            <ConfirmModal
+                isOpen={showModal}
+                title="Delete Order?"
+                message="This will permanently delete the selected order. Are you sure you want to continue?"
+                confirmText="Delete"
+                cancelText="Cancel"
+                danger
+                onConfirm={handleConfirmDelete}
+                onCancel={() => setShowModal(false)}
+            />
         </div>
     );
 }

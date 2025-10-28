@@ -61,7 +61,7 @@ export default function Create({}) {
                         </div>
 
                         <div>
-                            <InputLabel htmlFor="description" value="Description" />
+                            <InputLabel htmlFor="description" value="Clinic Service" />
                             <TextAreaInput
                                 id="description"
                                 name="description"

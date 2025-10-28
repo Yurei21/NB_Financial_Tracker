@@ -31,7 +31,7 @@ export default function ResetPassword({ token, username }) {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="username" value="Username" />
+                    <InputLabel htmlFor="username" value="Employee Name" />
                     <TextInput
                         id="username"
                         type="text"

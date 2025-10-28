@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { router, Link } from '@inertiajs/react';
+import ConfirmModal from '@/Components/Confirm'; // adjust path if needed
 
 export default function ExpensesModal({ expenses, filters }) {
     const [selectedDate, setSelectedDate] = useState(filters.date);
+    const [showModal, setShowModal] = useState(false);
+    const [expenseToDelete, setExpenseToDelete] = useState(null);
 
     const handleDateChange = (e) => {
         const newDate = e.target.value;
@@ -14,23 +17,27 @@ export default function ExpensesModal({ expenses, filters }) {
         });
     };
 
-    const deleteExpenses = (expense, currentPage) => {
-        if (!window.confirm('Are you sure you want to delete this order?')) return;
+    const confirmDelete = (expense) => {
+        setExpenseToDelete(expense);
+        setShowModal(true);
+    };
 
-        console.log('Deleting expense:', expense.id);
-        console.log('Selected date:', selectedDate);
-        console.log('Current page:', currentPage);
+    const handleConfirmDelete = () => {
+        if (!expenseToDelete) return;
 
-        router.delete(route('expenses.destroy', expense.id), {
+        router.delete(route('expenses.destroy', expenseToDelete.id), {
             data: {
                 date: selectedDate,
-                page: currentPage
+                page: expenses.meta?.current_page,
             },
             preserveState: true,
             preserveScroll: true,
+            onFinish: () => {
+                setShowModal(false);
+                setExpenseToDelete(null);
+            },
         });
     };
-
 
     return (
         <div className="p-6">
@@ -67,17 +74,23 @@ export default function ExpensesModal({ expenses, filters }) {
                                         {value}
                                     </p>
                                 </div>
-
                             ))}
+
                             <div className="flex gap-2 mt-2 w-full">
-                                <Link href={route('expenses.show', expense.id)} className="font-medium text-green-600 dark:text-green-500 hover:underline mx-1">
+                                <Link
+                                    href={route('expenses.show', expense.id)}
+                                    className="font-medium text-green-600 dark:text-green-500 hover:underline mx-1"
+                                >
                                     View all details
                                 </Link>
-                                <Link href={route('expenses.edit', expense.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1 rounded-lg border-solid">
+                                <Link
+                                    href={route('expenses.edit', expense.id)}
+                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1 rounded-lg border-solid"
+                                >
                                     Edit
                                 </Link>
                                 <button
-                                    onClick={() => deleteExpenses(expense, expenses.meta?.current_page)}
+                                    onClick={() => confirmDelete(expense)}
                                     className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                 >
                                     Delete
@@ -131,6 +144,17 @@ export default function ExpensesModal({ expenses, filters }) {
                 </div>
             )}
 
+            {/* Confirm Delete Modal */}
+            <ConfirmModal
+                isOpen={showModal}
+                title="Delete Expense?"
+                message="This will permanently delete the selected expense. Are you sure you want to continue?"
+                confirmText="Delete"
+                cancelText="Cancel"
+                danger
+                onConfirm={handleConfirmDelete}
+                onCancel={() => setShowModal(false)}
+            />
         </div>
     );
 }

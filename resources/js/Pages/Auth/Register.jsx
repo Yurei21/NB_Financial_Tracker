@@ -31,7 +31,7 @@ export default function Register() {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="username" value="Username" />
+                    <InputLabel htmlFor="username" value="Employee Name" />
                     <TextInput
                         id="username"
                         name="username"
