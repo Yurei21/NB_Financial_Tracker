@@ -42,6 +42,8 @@ class ReportService
             'net_profit' => $netProfit,
         ];
 
+        ksort($data);
+
         $totalOrdersMonth = array_sum(array_column($data, 'total_orders'));
         $totalIncomeMonth = array_sum(array_column($data, 'total_income'));
         $totalExpensesMonth = array_sum(array_column($data, 'total_expenses'));

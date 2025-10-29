@@ -31,10 +31,8 @@ export default function ReportsIndex({ report, selectedMonth, selectedYear, avai
                 <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-900 shadow-lg sm:rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
 
-                        {/* Filters + Summary Cards */}
                         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
                             <div className="flex flex-wrap gap-6">
-                                {/* Month Selector */}
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
                                         Month
@@ -50,7 +48,6 @@ export default function ReportsIndex({ report, selectedMonth, selectedYear, avai
                                     </select>
                                 </div>
 
-                                {/* Year Selector */}
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
                                         Year
@@ -71,7 +68,6 @@ export default function ReportsIndex({ report, selectedMonth, selectedYear, avai
                                 </div>
                             </div>
 
-                            {/* Summary Cards */}
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full md:w-auto">
                                 <SummaryCard label="Total Orders" value={report?.total_orders ?? 0} color="blue" />
                                 <SummaryCard label="Total Income" value={`₱${report?.total_income ?? '0.00'}`} color="teal" />
@@ -80,7 +76,6 @@ export default function ReportsIndex({ report, selectedMonth, selectedYear, avai
                             </div>
                         </div>
 
-                        {/* Daily Breakdown */}
                         <div>
                             <div className="flex justify-between items-center mb-4">
                                 <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">

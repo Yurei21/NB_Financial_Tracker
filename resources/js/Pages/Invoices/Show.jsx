@@ -41,7 +41,7 @@ export default function Show({ invoice }) {
 
                         <p><strong>Total Amount:</strong> ₱{parseFloat(invoice.amount).toFixed(2)}</p>
                         <p><strong>Description:</strong> {invoice.description ?? "—"}</p>
-                        <p><strong>Created at:</strong> {invoice.created_at}</p>
+                        <p><strong>Created at:</strong> {invoice.date}</p>
                     </div>
                 </div>
             </div>

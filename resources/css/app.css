@@ -28,6 +28,18 @@
         box-shadow: none !important;
     }
 
+    .print\:hidden {
+        display: none !important;
+    }
+
+    nav{
+        display: none !important;
+    }
+
+    button.print-hidden {
+        display: none !important;
+    }
+
     .overflow-x-auto,
     .overflow-y-auto {
         overflow: visible !important;
@@ -53,7 +65,5 @@
         background: #f3f4f6 !important;
     }
 
-    button, select {
-        display: none !important;
-    }
+    button.print-hidden { display: none !important; }
 }
