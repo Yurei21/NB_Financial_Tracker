@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +18,20 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+        $daysInMonth = $startOfMonth->daysInMonth;
+
+        $randomDay = $this->faker->numberBetween(1, $daysInMonth);
+        $orderDate = Carbon::createFromDate(
+            $startOfMonth->year,
+            $startOfMonth->month,
+            $randomDay
+        );
+        
         return [
             'patient_name' => $this->faker->name(),
-            'order_date' => now(),
+            'order_date' => $orderDate,
             'amount' => $this->faker->randomFloat(2, 50, 1000), 
             'description' => $this->faker->sentence(),
             'created_by' => User::factory(), 

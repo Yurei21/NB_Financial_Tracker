@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title inertia>{{ config('app.name', 'N&B Financial Tracker') }}</title>
-        <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
+        <link rel="icon" type="image/png" href="{{ asset('128x128.png') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
