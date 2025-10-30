@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { router, Link } from '@inertiajs/react';
-import ConfirmModal from '@/Components/Confirm'; // adjust path if needed
+import ConfirmModal from '@/Components/Confirm';
 
 export default function ExpensesModal({ expenses, filters }) {
     const [selectedDate, setSelectedDate] = useState(filters.date);
@@ -144,7 +144,6 @@ export default function ExpensesModal({ expenses, filters }) {
                 </div>
             )}
 
-            {/* Confirm Delete Modal */}
             <ConfirmModal
                 isOpen={showModal}
                 title="Delete Expense?"
