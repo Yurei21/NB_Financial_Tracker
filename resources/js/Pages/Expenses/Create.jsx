@@ -52,6 +52,7 @@ export default function Create({}) {
                                 id="label"
                                 type="text"
                                 name="label"
+                                placeholder="Ex. Utilities"
                                 value={data.label}
                                 className="mt-1 block w-full"
                                 isFocused={true}
@@ -65,6 +66,7 @@ export default function Create({}) {
                             <TextAreaInput
                                 id="description"
                                 name="description"
+                                placeholder="Electricity Bill"
                                 value={data.description}
                                 className="mt-1 block w-full"
                                 onChange={(e) => setData("description", e.target.value)}
@@ -77,6 +79,7 @@ export default function Create({}) {
                             <TextInput
                                 id="amount"
                                 name="amount"
+                                placeholder="₱"
                                 value={data.amount}
                                 className="mt-1 block w-full"
                                 onChange={(e) => setData("amount", e.target.value)}
