@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { router, Link } from '@inertiajs/react';
-import ConfirmModal from '@/Components/Confirm'; // adjust path as needed
+import ConfirmModal from '@/Components/Confirm'; 
 
 export default function OrdersCard({ orders, filters }) {
     const [selectedDate, setSelectedDate] = useState(filters.date);
-    const [orderToDelete, setOrderToDelete] = useState(null); // for tracking which order
+    const [orderToDelete, setOrderToDelete] = useState(null); 
     const [showModal, setShowModal] = useState(false);
 
     const handleDateChange = (e) => {

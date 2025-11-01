@@ -52,6 +52,7 @@ export default function Create({}) {
                                 id="patient_name"
                                 type="text"
                                 name="patient_name"
+                                placeholder=""
                                 value={data.patient_name}
                                 className="mt-1 block w-full"
                                 isFocused={true}
@@ -65,6 +66,7 @@ export default function Create({}) {
                             <TextAreaInput
                                 id="description"
                                 name="description"
+                                placeholder="Ultrasound"
                                 value={data.description}
                                 className="mt-1 block w-full"
                                 onChange={(e) => setData("description", e.target.value)}
@@ -77,6 +79,7 @@ export default function Create({}) {
                             <TextInput
                                 id="amount"
                                 name="amount"
+                                placeholder="₱"
                                 value={data.amount}
                                 className="mt-1 block w-full"
                                 onChange={(e) => setData("amount", e.target.value)}

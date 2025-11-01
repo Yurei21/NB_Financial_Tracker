@@ -1,11 +1,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ExpensesModal from './ExpensesModal'
 import { Head, Link } from '@inertiajs/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 export default function ExpensesIndex({ expenses, filters, success, totalAmount }) {
     const amount = totalAmount ?? 0
     const [showSuccess, setShowSuccess] = useState(!!success);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         if (success) {
@@ -15,11 +16,36 @@ export default function ExpensesIndex({ expenses, filters, success, totalAmount 
         }
     }, [success]);
 
+     const filteredExpenses = useMemo(() => {
+            if (!searchQuery.trim()) return expenses;
+            const query = searchQuery.toLowerCase();
+    
+            return {
+                ...expenses,
+                data: expenses.data.filter(expense =>
+                    (expense.label && expense.label.toLowerCase().includes(query)) ||
+                    (expense.description && expense.description.toLowerCase().includes(query)) ||
+                    (expense.created_by && expense.created_by.toLowerCase().includes(query)) ||
+                    (expense.modified_by && expense.modified_by.toLowerCase().includes(query)) ||
+                    (expense.expense_date && expense.expense_date.toLowerCase().includes(query))
+                ),
+            };
+        }, [expenses, searchQuery]);
+
     return (
         <AuthenticatedLayout
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Expenses</h2>
+                    
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search expenses..."
+                        className="w-full sm:w-1/3 px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                    />
+
                     <Link
                         href={route("expenses.create")}
                         className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
@@ -64,7 +90,7 @@ export default function ExpensesIndex({ expenses, filters, success, totalAmount 
                 </div>
             </div>
 
-            <ExpensesModal expenses={expenses} filters={filters} />
+            <ExpensesModal expenses={filteredExpenses} filters={filters} />
         </AuthenticatedLayout>
     );
 }
