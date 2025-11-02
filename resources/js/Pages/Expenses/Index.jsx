@@ -89,7 +89,7 @@ export default function ExpensesIndex({ expenses, filters, success, totalAmount 
                     </div>
                 </div>
             </div>
-
+ 
             <ExpensesModal expenses={filteredExpenses} filters={filters} />
         </AuthenticatedLayout>
     );
