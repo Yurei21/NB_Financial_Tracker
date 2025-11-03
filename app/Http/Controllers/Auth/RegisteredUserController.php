@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -76,5 +77,15 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));
+    }
+
+    public function isOnline(): bool
+    {
+        try{
+            $response = Http::timeout(2)->get('https://clients3.google.com/generate_204');
+            return $response->status() === 204;
+        } catch(\Exception $e) {
+            return false;
+        }
     }
 }
