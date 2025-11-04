@@ -27,7 +27,9 @@ class RegisteredUserController extends Controller
     {
         $plainCode = strtoupper(Str::random(10));
 
-        RegistrationCode::create([
+        if(!isOnline)
+
+        /*RegistrationCode::create([
             'code_hash' => Hash::make($plainCode),
             'expires_at' => now()->addMinutes(10),
         ]);
@@ -37,6 +39,7 @@ class RegisteredUserController extends Controller
         Mail::to($recipient)->queue(new RegistrationCodeMail($plainCode));
 
         return Inertia::render('Auth/Register');
+        */
     }
 
     /**
