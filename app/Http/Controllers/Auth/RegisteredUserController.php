@@ -28,6 +28,10 @@ class RegisteredUserController extends Controller
     {
         $plainCode = strtoupper(Str::random(10));
 
+        if(!$this->isOnline()){        
+            return inertia('Auth/RegisterOffline');
+        } 
+
         RegistrationCode::create([
             'code_hash' => Hash::make($plainCode),
             'expires_at' => now()->addMinutes(10),
@@ -38,7 +42,6 @@ class RegisteredUserController extends Controller
         Mail::to($recipient)->queue(new RegistrationCodeMail($plainCode));
 
         return Inertia::render('Auth/Register');
-        
     }
 
     /**
@@ -53,10 +56,28 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Password::min(12)
             ->mixedCase()
             ->numbers()
-            ->symbols()
-            ->uncompromised(),],
+            ->symbols()],
             'registration_code' => 'required|string',
         ]);
+
+        if (!$this->isOnline()) {
+            $secretCode = $request->registration_code;
+            $adminSecret = env('ADMIN_SECRETCODE');
+
+            if ($secretCode !== $adminSecret) {
+                return back()->withErrors([
+                    'registration_code' => 'Invalid offline admin code.',
+                ]);
+            }
+            $user = User::create([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+
+            Auth::login($user);
+            return redirect(route('dashboard', absolute: false));
+        }
 
         if(User::where("username", $request->username)->exists()){
             return back()->withErrors(['username' => 'This username is already taken.'])->onlyInput('username');
