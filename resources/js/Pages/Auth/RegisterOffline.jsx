@@ -46,7 +46,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="registration_code" value="Registration Code (Sent via Company Email)" />
+                    <InputLabel htmlFor="registration_code" value="Registration Code (Offline Key)" />
                     <TextInput
                         id="registration_code"
                         type="text"
