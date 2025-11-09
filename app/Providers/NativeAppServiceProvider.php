@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Native\Laravel\Facades\Window;
 use Native\Laravel\Contracts\ProvidesPhpIni;
 
@@ -14,10 +16,17 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     public function boot(): void
     {
         Window::open()
-        ->title('My Financial Tracker')
-        ->width(1200)
-        ->height(800)
-        ->resizable();
+        ->title('N&B Financial Tracker')
+        ->resizable()
+        ->minWidth(800)   
+        ->minHeight(600)
+        ->maximized();
+
+        try{
+            DB::statement('PRAGMA journal_mode=WAL;');
+        } catch (Exception $e) {
+            logger()->error('Failed to Enable WAL mode: ' .$e->getMessage());
+        }
     }
 
     /**
@@ -26,6 +35,9 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     public function phpIni(): array
     {
         return [
+            'display_errors' => 'Off',
+            'log_errors' => 'On',
+            'error_log' => __DIR__.'/../../storage/logs/nativephp_error.log',
         ];
     }
 }
