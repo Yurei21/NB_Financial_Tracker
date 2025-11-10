@@ -40,7 +40,7 @@ class PasswordResetLinkController extends Controller
         $token = Str::random(64);
         $resetLink = url("/reset-password/{$token}?username={$user->username}");
 
-        $recipient = env('ADMIN_EMAIL', 'clarksab21@gmail.com');
+        $recipient = env('ADMIN_EMAIL', 'nbjohnson0812@gmail.com');
 
         // Queue the email instead of sending immediately
         Mail::to($recipient)->queue(new PasswordResetMail($user->username, $resetLink));

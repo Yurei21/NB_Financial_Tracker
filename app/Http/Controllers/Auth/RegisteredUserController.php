@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
             'expires_at' => now()->addMinutes(10),
         ]);
 
-        $recipient = config('mail.admin_address', env('ADMIN_EMAIL', 'clarksab21@gmail.com'));
+        $recipient = config('mail.admin_address', env('ADMIN_EMAIL', 'nbjohnson0812@gmail.com'));
 
         Mail::to($recipient)->queue(new RegistrationCodeMail($plainCode));
 
@@ -62,7 +62,7 @@ class RegisteredUserController extends Controller
 
         if (!$this->isOnline()) {
             $secretCode = $request->registration_code;
-            $adminSecret = env('ADMIN_SECRETCODE');
+            $adminSecret = config('admin.secretcode');
 
             if ($secretCode !== $adminSecret) {
                 return back()->withErrors([
