@@ -29,22 +29,22 @@ return [
     /**
      * The author of your application.
      */
-    'author' => env('NATIVEPHP_APP_AUTHOR'),
+    'author' => env('NATIVEPHP_APP_AUTHOR', 'Clarence Sabangan'),
 
     /**
      * The copyright notice for your application.
      */
-    'copyright' => env('NATIVEPHP_APP_COPYRIGHT'),
+    'copyright' => env('NATIVEPHP_APP_COPYRIGHT', '© 2025 Clarence Sabangan. All rights reserved.'),
 
     /**
      * The description of your application.
      */
-    'description' => env('NATIVEPHP_APP_DESCRIPTION', 'An awesome app built with NativePHP'),
+    'description' => env('NATIVEPHP_APP_DESCRIPTION', 'A secure offline-first Financial Tracker.'),
 
     /**
      * The Website of your application.
      */
-    'website' => env('NATIVEPHP_APP_WEBSITE', 'https://nativephp.com'),
+    'website' => env('NATIVEPHP_APP_WEBSITE', 'https://financialtracker.local'),
 
     /**
      * The default service provider for your application. This provider
@@ -155,10 +155,15 @@ return [
      */
     'prebuild' => [
         'npm run build',
+        'php artisan config:clear',
+        'php artisan route:clear',
+        'php artisan view:clear',
+        'php artisan optimize',
     ],
-
+    
     'postbuild' => [
-        // 'rm -rf public/build',
+        'php artisan config:cache',
+        'php artisan route:cache',
     ],
 
     /**
