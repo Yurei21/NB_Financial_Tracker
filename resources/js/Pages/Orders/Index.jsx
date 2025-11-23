@@ -47,13 +47,21 @@ export default function OrdersIndex({ orders, filters, success, totalAmount }) {
                         placeholder="Search orders..."
                         className="w-full sm:w-1/3 px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
                     />
+                    <div className='flex gap-2'>
+                        <Link
+                            href={route('orders.import')}
+                            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                        >
+                            + Add Import
+                        </Link>
 
-                    <Link
-                        href={route('orders.create')}
-                        className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-                    >
-                        + Add New
-                    </Link>
+                        <Link
+                            href={route('orders.create')}
+                            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                        >
+                            + Add New
+                        </Link>
+                    </div>
                 </div>
             }
         >
