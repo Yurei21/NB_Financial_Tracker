@@ -20,6 +20,14 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function() {
+    Route::get('/orders/import', [OrderController::class, 'import'])
+        ->name('orders.import');
+
+    Route::post('/orders/import-access', [OrderController::class, 'importAccess'])
+        ->name('orders.importAccess');
+});
+
+Route::middleware(['auth', 'verified'])->group(function() {
     Route::resource('orders', OrderController::class);
     Route::resource('expenses', ExpensesController::class);
     Route::resource('invoices', InvoicesController::class)
