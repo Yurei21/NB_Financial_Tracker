@@ -109,89 +109,88 @@ class OrderController extends Controller
         return inertia('Orders/Import');
     }
 
-public function importAccess(Request $request)
-{
-    $request->validate([
-        'file' => 'required|file|mimes:txt,text'
-    ]);
+    public function importAccess(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:txt,text'
+        ]);
 
-    $file = $request->file('file');
-    if (!$file || !$file->isValid()) {
-        return back()->withErrors(['file' => 'File upload failed']);
-    }
-
-    $lines = file($file->getRealPath(), FILE_IGNORE_NEW_LINES);
-    $headerIndexes = [];
-
-    foreach ($lines as $lineNumber => $line) {
-        $line = trim($line);
-
-        // Skip lines that do not start with pipe
-        if (!str_starts_with($line, '|')) continue;
-
-        // Split by pipe, trim spaces
-        $cols = array_map('trim', explode('|', $line));
-
-        // Skip empty rows
-        if (empty($cols)) continue;
-
-        // Detect header row dynamically
-        if (empty($headerIndexes) && in_array('PatientName', $cols)) {
-            $headerIndexes = array_flip($cols); // column name => index
-            continue;
+        $file = $request->file('file');
+        if (!$file || !$file->isValid()) {
+            return back()->withErrors(['file' => 'File upload failed']);
         }
 
-        // Skip if header not yet detected
-        if (empty($headerIndexes)) continue;
+        $lines = file($file->getRealPath(), FILE_IGNORE_NEW_LINES);
+        $headerIndexes = [];
 
-        // Extract PatientName (required)
-        $patientNameCol = $headerIndexes['PatientName'] ?? null;
-        $patientName = $patientNameCol !== null && isset($cols[$patientNameCol]) ? $cols[$patientNameCol] : null;
-        if (!$patientName) continue;
+        foreach ($lines as $lineNumber => $line) {
+            $line = trim($line);
 
-        // Extract TotalAmount and OrderTest if available
-        $totalAmountCol = $headerIndexes['TotalAmount'] ?? null;
-        $descriptionCol = $headerIndexes['OrderTest'] ?? null;
+            // Skip lines that do not start with pipe
+            if (!str_starts_with($line, '|')) continue;
 
-        $totalAmount = $totalAmountCol !== null && isset($cols[$totalAmountCol]) ? $cols[$totalAmountCol] : null;
-        $description = $descriptionCol !== null && isset($cols[$descriptionCol]) ? $cols[$descriptionCol] : null;
+            // Split by pipe, trim spaces
+            $cols = array_map('trim', explode('|', $line));
 
-        // Detect TransactionDate by scanning all columns
-        $orderDate = null;
-        foreach ($cols as $col) {
-            if (preg_match('/^\d{2}\/\d{2}\/\d{4} \d{1,2}:\d{2}$/', $col)) {
-                try {
-                    $orderDate = Carbon::createFromFormat('m/d/Y G:i', $col);
-                    break;
-                } catch (\Exception $e) {
-                    continue;
+            // Skip empty rows
+            if (empty($cols)) continue;
+
+            // Detect header row dynamically
+            if (empty($headerIndexes) && in_array('PatientName', $cols)) {
+                $headerIndexes = array_flip($cols); // column name => index
+                continue;
+            }
+
+            // Skip if header not yet detected
+            if (empty($headerIndexes)) continue;
+
+            // Extract PatientName (required)
+            $patientNameCol = $headerIndexes['PatientName'] ?? null;
+            $patientName = $patientNameCol !== null && isset($cols[$patientNameCol]) ? $cols[$patientNameCol] : null;
+            if (!$patientName) continue;
+
+            // Extract TotalAmount and OrderTest if available
+            $totalAmountCol = $headerIndexes['TotalAmount'] ?? null;
+            $descriptionCol = $headerIndexes['OrderTest'] ?? null;
+
+            $totalAmount = $totalAmountCol !== null && isset($cols[$totalAmountCol]) ? $cols[$totalAmountCol] : null;
+            $description = $descriptionCol !== null && isset($cols[$descriptionCol]) ? $cols[$descriptionCol] : null;
+
+            // Detect TransactionDate by scanning all columns
+            $orderDate = null;
+            foreach ($cols as $col) {
+                if (preg_match('/^\d{2}\/\d{2}\/\d{4} \d{1,2}:\d{2}$/', $col)) {
+                    try {
+                        $orderDate = Carbon::createFromFormat('m/d/Y G:i', $col);
+                        break;
+                    } catch (\Exception $e) {
+                        continue;
+                    }
                 }
+            }
+
+            if (!$orderDate) {
+                Log::info("Skipping row, cannot find valid date at line " . ($lineNumber + 1) . ": " . implode('|', $cols));
+                continue;
+            }
+
+            // Save order
+            try {
+                Order::create([
+                    'patient_name' => $patientName,
+                    'order_date'   => $orderDate,
+                    'amount'       => $totalAmount ? (float) str_replace([',', '₱'], '', $totalAmount) : 0,
+                    'description'  => $description,
+                    'created_by'   => Auth::id(),
+                    'modified_by'  => Auth::id(),
+                ]);
+            } catch (\Exception $e) {
+                Log::error("Failed to create order at line " . ($lineNumber + 1) . ": " . $e->getMessage());
+                continue;
             }
         }
 
-        if (!$orderDate) {
-            Log::info("Skipping row, cannot find valid date at line " . ($lineNumber + 1) . ": " . implode('|', $cols));
-            continue;
-        }
-
-        // Save order
-        try {
-            Order::create([
-                'patient_name' => $patientName,
-                'order_date'   => $orderDate,
-                'amount'       => $totalAmount ? (float) str_replace([',', '₱'], '', $totalAmount) : 0,
-                'description'  => $description,
-                'created_by'   => Auth::id(),
-                'modified_by'  => Auth::id(),
-            ]);
-        } catch (\Exception $e) {
-            Log::error("Failed to create order at line " . ($lineNumber + 1) . ": " . $e->getMessage());
-            continue;
-        }
+        return to_route('orders.index')->with('success', 'MS Access export imported successfully!');
     }
-
-    return to_route('orders.index')->with('success', 'MS Access export imported successfully!');
-}
-
 
 }
