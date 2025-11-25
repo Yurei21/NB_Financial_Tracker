@@ -159,13 +159,14 @@ class OrderController extends Controller
             // Detect TransactionDate by scanning all columns
             $orderDate = null;
             foreach ($cols as $col) {
-                if (preg_match('/^\d{2}\/\d{2}\/\d{4} \d{1,2}:\d{2}$/', $col)) {
-                    try {
-                        $orderDate = Carbon::createFromFormat('m/d/Y G:i', $col);
-                        break;
-                    } catch (\Exception $e) {
-                        continue;
-                    }
+                $col = trim($col);
+                if (preg_match('/^\d{1,2}\/\d{1,2}\/\d{4}$/', $col)) {
+                    $orderDate = Carbon::createFromFormat('m/d/Y', $col);
+                    break;
+                }
+                elseif (preg_match('/^\d{1,2}\/\d{1,2}\/\d{4} \d{1,2}:\d{2}$/', $col)) {
+                    $orderDate = Carbon::createFromFormat('m/d/Y G:i', $col);
+                    break;
                 }
             }
 
