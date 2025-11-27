@@ -42,37 +42,48 @@ class ImportService {
 
         foreach ($lines as $lineNumber => $line) {
             $line = trim($line);
+
+            // Skip lines that do not start with pipe
             if (!str_starts_with($line, '|')) continue;
 
+            // Split by pipe, trim spaces
             $cols = array_map('trim', explode('|', $line));
+
+            // Skip empty rows
             if (empty($cols)) continue;
 
-            // detect header row
+            // Detect header row dynamically
             if (empty($headerIndexes) && in_array('PatientName', $cols)) {
-                $headerIndexes = array_flip($cols);
+                $headerIndexes = array_flip($cols); // column name => index
                 continue;
             }
+
+            // Skip if header not yet detected
             if (empty($headerIndexes)) continue;
 
+            // Extract PatientName (required)
             $patientNameCol = $headerIndexes['PatientName'] ?? null;
             $patientName = $patientNameCol !== null && isset($cols[$patientNameCol]) ? $cols[$patientNameCol] : null;
             if (!$patientName) continue;
 
+            // Extract TotalAmount and OrderTest if available
             $totalAmountCol = $headerIndexes['TotalAmount'] ?? null;
             $descriptionCol = $headerIndexes['OrderTest'] ?? null;
 
             $totalAmount = $totalAmountCol !== null && isset($cols[$totalAmountCol]) ? $cols[$totalAmountCol] : null;
             $description = $descriptionCol !== null && isset($cols[$descriptionCol]) ? $cols[$descriptionCol] : null;
 
+            // Detect TransactionDate by scanning all columns
             $orderDate = null;
             foreach ($cols as $col) {
-                if (preg_match('/^\d{2}\/\d{2}\/\d{4} \d{1,2}:\d{2}$/', $col)) {
-                    try {
-                        $orderDate = Carbon::createFromFormat('m/d/Y G:i', $col);
-                        break;
-                    } catch (\Exception $e) {
-                        continue;
-                    }
+                $col = trim($col);
+                if (preg_match('/^\d{1,2}\/\d{1,2}\/\d{4}$/', $col)) {
+                    $orderDate = Carbon::createFromFormat('m/d/Y', $col);
+                    break;
+                }
+                elseif (preg_match('/^\d{1,2}\/\d{1,2}\/\d{4} \d{1,2}:\d{2}$/', $col)) {
+                    $orderDate = Carbon::createFromFormat('m/d/Y G:i', $col);
+                    break;
                 }
             }
 
@@ -81,13 +92,14 @@ class ImportService {
                 continue;
             }
 
+            // Save order
             try {
                 Order::create([
                     'patient_name' => $patientName,
                     'order_date'   => $orderDate,
                     'amount'       => $totalAmount ? (float) str_replace([',', '₱'], '', $totalAmount) : 0,
                     'description'  => $description,
-                    'created_by'   => Auth::id() ?? 1, 
+                    'created_by'   => Auth::id() ?? 1,
                     'modified_by'  => Auth::id() ?? 1,
                 ]);
             } catch (\Exception $e) {
