@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Native\Laravel\Facades\Window;
 use Native\Laravel\Contracts\ProvidesPhpIni;
+use Native\Laravel\Facades\Process;
 
 class NativeAppServiceProvider implements ProvidesPhpIni
 {
@@ -27,6 +28,10 @@ class NativeAppServiceProvider implements ProvidesPhpIni
         } catch (Exception $e) {
             logger()->error('Failed to Enable WAL mode: ' .$e->getMessage());
         }
+
+        Process::daemon('scheduler', base_path('artisan'), [
+            'schedule:work'
+        ])->path(storage_path('logs'));
     }
 
     /**

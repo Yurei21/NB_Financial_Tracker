@@ -19,15 +19,22 @@ class ExpenseFactory extends Factory
     public function definition(): array
     {
         $startOfMonth = Carbon::now()->startOfMonth();
-        $endOfMonth = Carbon::now()->endOfMonth();
         $daysInMonth = $startOfMonth->daysInMonth;
+        $today = Carbon::now();
 
-        $randomDay = $this->faker->numberBetween(1, $daysInMonth);
-        $expenseDate = Carbon::createFromDate(
-            $startOfMonth->year,
-            $startOfMonth->month,
-            $randomDay
-        );
+        // 60% chance to use today's date, 40% chance to use a random day in the month
+        $useToday = $this->faker->numberBetween(1, 100) <= 60;
+
+        if ($useToday) {
+            $expenseDate = $today->copy();
+        } else {
+            $randomDay = $this->faker->numberBetween(1, $daysInMonth);
+            $expenseDate = Carbon::createFromDate(
+                $startOfMonth->year,
+                $startOfMonth->month,
+                $randomDay
+            );
+        }
 
         return [
             'label' => $this->faker->word(),
